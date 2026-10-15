@@ -1,0 +1,13 @@
+Multiple frameworks detected: solc, Solc-json. Using solc (highest priority). Use --compile-force-framework to override.
+'/home/claude/solc-static-linux --version' running
+'/home/claude/solc-static-linux @openzeppelin=node_modules/@openzeppelin contracts/ModularNFT.sol --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,/home/claude/nftlab/contracts' running
+
+Detector: events-maths
+ModularNFT.mintBatch(address,uint256) (contracts/ModularNFT.sol#46-55) should emit an event for: 
+	- _nextId = start + qty (contracts/ModularNFT.sol#50) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Detector: naming-convention
+Variable ModularNFT.MAX_SUPPLY (contracts/ModularNFT.sol#16) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+contracts/ModularNFT.sol analyzed (17 contracts with 102 detectors), 2 result(s) found

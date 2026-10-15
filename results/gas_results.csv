@@ -1,0 +1,7 @@
+metric,NaiveNFT,OZBaselineNFT,ModularNFT
+Deployment,723735,1276590,1366715
+"Mint (1 token, avg of 20)",165156,171661,82012
+Mint 10 tokens (10 separate txs),1489300,1554350,657680
+Mint 10 tokens (1 batch tx),,,326468
+Transfer (avg of 10),39421,39655,39744
+Burn by owner (avg of 10),45414,29322,29340

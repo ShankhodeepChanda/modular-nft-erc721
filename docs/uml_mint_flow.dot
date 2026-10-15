@@ -1,0 +1,19 @@
+digraph F {
+  graph [rankdir=TB, fontname="Times-Roman", nodesep=0.9, ranksep=0.32, pad=0.25, dpi=200, label=""];
+  node [shape=box, style="rounded,filled", fontname="Times-Roman", fontsize=12, margin="0.14,0.1"];
+  edge [color="#444444", penwidth=1.3, fontname="Times-Roman", fontsize=11];
+  s [label="Caller sends\nmint(to)", fillcolor="#FFFFFF", shape=ellipse];
+  a [label="onlyOwner\n(OpenZeppelin Ownable)", fillcolor="#DCE3EC"];
+  b [label="whenNotPaused\n(OpenZeppelin Pausable)", fillcolor="#DCE3EC"];
+  c [label="nonReentrant\n(OpenZeppelin ReentrancyGuard)", fillcolor="#DCE3EC"];
+  d [label="id >= MAX_SUPPLY ?\n(our supply-cap check)", fillcolor="#DDF0E3", color="#2E8B57", penwidth=2];
+  e [label="_nextId = id + 1\n(our counter, unchecked)", fillcolor="#DDF0E3", color="#2E8B57", penwidth=2];
+  f [label="_safeMint(to, id)\n(OpenZeppelin ERC721)", fillcolor="#DCE3EC"];
+  g [label="Token minted\nNo URI stored: tokenURI = baseURI + id", fillcolor="#FFFFFF", shape=ellipse];
+  r [label="Revert", fillcolor="#F6D5D5", shape=ellipse];
+  s->a->b->c->d; d->e [label="no"]; e->f->g;
+  a->r [style=dashed, label="not owner", constraint=false];
+  b->r [style=dashed, label="paused", constraint=false];
+  c->r [style=dashed, label="re-entered", constraint=false];
+  d->r [style=dashed, label="yes: MaxSupplyReached", constraint=false];
+}

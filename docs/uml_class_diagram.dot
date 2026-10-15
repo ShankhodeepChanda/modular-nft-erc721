@@ -1,0 +1,26 @@
+digraph G {
+  graph [rankdir=BT, fontname="Times-Roman", nodesep=0.25, ranksep=0.9, pad=0.25, dpi=200, bgcolor="white"];
+  node [shape=plain, fontname="Times-Roman", fontsize=12];
+  edge [arrowhead=empty, color="#444444", penwidth=1.4];
+
+  ERC721 [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#DCE3EC">
+    <TR><TD BGCOLOR="#9AA9BD"><B>ERC721</B><BR/><I>OpenZeppelin 5.0.2</I></TD></TR>
+    <TR><TD ALIGN="LEFT">balanceOf(owner)<BR ALIGN="LEFT"/>ownerOf(tokenId)<BR ALIGN="LEFT"/>approve(to, tokenId)<BR ALIGN="LEFT"/>transferFrom(from, to, tokenId)<BR ALIGN="LEFT"/>safeTransferFrom(...)<BR ALIGN="LEFT"/>tokenURI(tokenId)<BR ALIGN="LEFT"/>#_safeMint(to, tokenId)<BR ALIGN="LEFT"/>#_update(to, tokenId, auth)<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  Ownable [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#DCE3EC">
+    <TR><TD BGCOLOR="#9AA9BD"><B>Ownable</B><BR/><I>OpenZeppelin 5.0.2</I></TD></TR>
+    <TR><TD ALIGN="LEFT">owner()<BR ALIGN="LEFT"/>transferOwnership(newOwner)<BR ALIGN="LEFT"/>renounceOwnership()<BR ALIGN="LEFT"/>modifier onlyOwner<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  Pausable [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#DCE3EC">
+    <TR><TD BGCOLOR="#9AA9BD"><B>Pausable</B><BR/><I>OpenZeppelin 5.0.2</I></TD></TR>
+    <TR><TD ALIGN="LEFT">paused()<BR ALIGN="LEFT"/>#_pause()<BR ALIGN="LEFT"/>#_unpause()<BR ALIGN="LEFT"/>modifier whenNotPaused<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  Guard [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#DCE3EC">
+    <TR><TD BGCOLOR="#9AA9BD"><B>ReentrancyGuard</B><BR/><I>OpenZeppelin 5.0.2</I></TD></TR>
+    <TR><TD ALIGN="LEFT">modifier nonReentrant<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+
+  Modular [label=<<TABLE BORDER="2" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#DDF0E3" COLOR="#2E8B57">
+    <TR><TD BGCOLOR="#2E8B57"><FONT COLOR="white"><B>ModularNFT</B><BR/>(proposed design, written by us)</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>New attributes</B><BR ALIGN="LEFT"/>+MAX_SUPPLY : uint256 &lt;&lt;immutable&gt;&gt;<BR ALIGN="LEFT"/>-_nextId : uint256<BR ALIGN="LEFT"/>-_baseTokenURI : string<BR ALIGN="LEFT"/></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>New operations</B><BR ALIGN="LEFT"/>+mint(to) : id<BR ALIGN="LEFT"/>+mintBatch(to, qty)<BR ALIGN="LEFT"/>+burn(id)<BR ALIGN="LEFT"/>+pause() / unpause()<BR ALIGN="LEFT"/>+totalMinted()<BR ALIGN="LEFT"/>#_baseURI() «override»<BR ALIGN="LEFT"/>errors: MaxSupplyReached,<BR ALIGN="LEFT"/>ZeroQuantity<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+
+  Modular -> ERC721; Modular -> Ownable; Modular -> Pausable; Modular -> Guard;
+
+}

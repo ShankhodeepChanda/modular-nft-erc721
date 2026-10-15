@@ -1,0 +1,53 @@
+{
+  "gas": {
+    "NaiveNFT": {
+      "deploy": 723735,
+      "mint_single": 165156,
+      "mint10_separate": 1489300,
+      "transfer": 39421,
+      "burn": 45414
+    },
+    "OZBaselineNFT": {
+      "deploy": 1276590,
+      "mint_single": 171661,
+      "mint10_separate": 1554350,
+      "transfer": 39655,
+      "burn": 29322
+    },
+    "ModularNFT": {
+      "deploy": 1366715,
+      "mint_single": 82012,
+      "mint10_separate": 657680,
+      "transfer": 39744,
+      "burn": 29340,
+      "mint10_batch": 326468
+    }
+  },
+  "security": {
+    "unauthorized_mint": {
+      "NaiveNFT": "SUCCEEDED",
+      "OZBaselineNFT": "blocked",
+      "ModularNFT": "blocked"
+    },
+    "burn_others_token": {
+      "NaiveNFT": "SUCCEEDED",
+      "OZBaselineNFT": "blocked",
+      "ModularNFT": "blocked"
+    },
+    "supply_cap": {
+      "NaiveNFT": "no cap (6 of 6 minted)",
+      "OZBaselineNFT": "no cap (6 of 6 minted)",
+      "ModularNFT": "cap enforced (5 of 6 minted)"
+    },
+    "pause_blocks_mint": {
+      "ModularNFT": "blocked",
+      "NaiveNFT": "n/a (no pause)",
+      "OZBaselineNFT": "n/a (no pause)"
+    },
+    "reentrant_mint": {
+      "OZBaselineNFT": "reentrant mint accepted (balance 2)",
+      "ModularNFT": "blocked (tx reverted)",
+      "NaiveNFT": "n/a (no receiver callback)"
+    }
+  }
+}

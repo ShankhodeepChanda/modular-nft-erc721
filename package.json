@@ -1,0 +1,19 @@
+{
+  "name": "nft-contract-experiment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "node scripts/compile.js",
+    "experiment": "node scripts/experiment.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "5.0.2",
+    "ethers": "6.17.0",
+    "hardhat": "2.22.17",
+    "solc": "0.8.26"
+  }
+}

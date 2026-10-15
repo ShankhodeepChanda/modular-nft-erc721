@@ -1,0 +1,4 @@
+Multiple frameworks detected: solc, Solc-json. Using solc (highest priority). Use --compile-force-framework to override.
+'/home/claude/solc-static-linux --version' running
+'/home/claude/solc-static-linux @openzeppelin=node_modules/@openzeppelin contracts/OZBaselineNFT.sol --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,/home/claude/nftlab/contracts' running
+contracts/OZBaselineNFT.sol analyzed (18 contracts with 102 detectors), 0 result(s) found

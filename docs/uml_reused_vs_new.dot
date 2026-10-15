@@ -1,0 +1,17 @@
+digraph C {
+  graph [rankdir=TB, fontname="Times-Roman", nodesep=0.3, ranksep=0.5, pad=0.25, dpi=200];
+  node [shape=plain, fontname="Times-Roman", fontsize=12];
+  edge [arrowhead=empty, color="#444444", penwidth=1.3];
+  N [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#F4E3D0">
+   <TR><TD BGCOLOR="#C88B4A"><B>NaiveNFT</B><BR/>manual baseline</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>Inherits nothing</B><BR ALIGN="LEFT"/>Every function hand-written:<BR ALIGN="LEFT"/>mint, burn, approve,<BR ALIGN="LEFT"/>transferFrom, ownerOf,<BR ALIGN="LEFT"/>balanceOf, tokenURI<BR ALIGN="LEFT"/>Per-token URI on-chain<BR ALIGN="LEFT"/>Defects: open mint, open burn<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  O [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#DCE3EC">
+   <TR><TD BGCOLOR="#9AA9BD"><B>OZBaselineNFT</B><BR/>typical OpenZeppelin build</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>Inherits (reused)</B><BR ALIGN="LEFT"/>ERC721, ERC721URIStorage,<BR ALIGN="LEFT"/>ERC721Burnable, Ownable<BR ALIGN="LEFT"/><B>Our code</B>: safeMint (owner<BR ALIGN="LEFT"/>only), tokenURI and<BR ALIGN="LEFT"/>supportsInterface overrides<BR ALIGN="LEFT"/>Per-token URI on-chain<BR ALIGN="LEFT"/>No cap, pause or guard<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  M [label=<<TABLE BORDER="2" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#DDF0E3" COLOR="#2E8B57">
+   <TR><TD BGCOLOR="#2E8B57"><FONT COLOR="white"><B>ModularNFT</B><BR/>proposed design</FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>Inherits (reused)</B><BR ALIGN="LEFT"/>ERC721, Ownable, Pausable,<BR ALIGN="LEFT"/>ReentrancyGuard<BR ALIGN="LEFT"/><B>New in ours</B>: supply cap,<BR ALIGN="LEFT"/>shared base URI, mintBatch,<BR ALIGN="LEFT"/>pause control, safe burn,<BR ALIGN="LEFT"/>totalMinted<BR ALIGN="LEFT"/>No per-token URI storage<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  OZ [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#EEF1F6"><TR><TD><B>OpenZeppelin Contracts 5.0.2</B><BR/>audited, community-maintained library</TD></TR></TABLE>>];
+  O -> OZ [style=dashed, label=" uses"]; M -> OZ [style=dashed, label=" uses"];
+  {rank=same; N; O; M}
+}
