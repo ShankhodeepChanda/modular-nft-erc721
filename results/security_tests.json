@@ -1,0 +1,69 @@
+{
+ "T1_paused_mint": "reverted",
+ "T1_paused_transfer": "allowed",
+ "T1_paused_approve": "allowed",
+ "T1_paused_burn": "allowed",
+ "T1_unpaused_mint": "allowed",
+ "T2_mint_after_burn_at_cap": {
+  "error": "MaxSupplyReached",
+  "totalMinted": 2,
+  "balanceOfA": 1
+ },
+ "T3_batch_zero": "ZeroQuantity",
+ "T3_batch_cap_plus1": "MaxSupplyReached",
+ "T3_batch_overflow_nextId1": "Panic(17)",
+ "T3_after_failures_totalMinted": 1,
+ "T3_batch_exact_remaining": "OK, totalMinted=5",
+ "T3_mint_after_full": "MaxSupplyReached",
+ "T4_reenter_mint_ModularNFT": {
+  "error": "ReentrancyGuardReentrantCall",
+  "minted": 0,
+  "balance": 0
+ },
+ "T4_reenter_mint_V_base_G0P0C1": {
+  "error": null,
+  "minted": "n/a (no getter)",
+  "balance": 2
+ },
+ "T4b_unguarded_cap1_reenter": {
+  "error": "MaxSupplyReached",
+  "balance": 0
+ },
+ "T5_callback_forwards_token": {
+  "error": null,
+  "ownerOf0": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+  "sinkIsOwner": true
+ },
+ "T6_mint_to_zero": "ERC721InvalidReceiver(0x0000000000000000000000000000000000000000)",
+ "T6_transfer_to_zero": "ERC721InvalidReceiver(0x0000000000000000000000000000000000000000)",
+ "T6_nonowner_pause": "OwnableUnauthorizedAccount(0x70997970C51812dc3A010C7d01b50e0d17dc79C8)",
+ "T6_nonowner_mintBatch": "OwnableUnauthorizedAccount(0x70997970C51812dc3A010C7d01b50e0d17dc79C8)",
+ "T6_mint_after_renounce": "OwnableUnauthorizedAccount(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266)",
+ "T7_erc165": {
+  "erc721": true,
+  "metadata": true,
+  "random": false
+ },
+ "T7_tokenURI": "ipfs://bafyexample/0",
+ "T7_ownerOf_nonexistent": "ERC721NonexistentToken(99)",
+ "T7_tokenURI_nonexistent": "ERC721NonexistentToken(99)",
+ "T7_unauthorized_transfer": "ERC721InsufficientApproval(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC,0)",
+ "T7_approved_operator_burn": "allowed (OK)",
+ "T8_naive_attacker_burned_victim": "SUCCEEDED",
+ "T9_random_invariants": {
+  "ops": 1500,
+  "burnedOrMoved": "see model",
+  "ops_hist": [
+   256,
+   269,
+   238,
+   244,
+   248,
+   245
+  ],
+  "finalMinted": 40,
+  "live": 0,
+  "violations": 0,
+  "first": []
+ }
+}

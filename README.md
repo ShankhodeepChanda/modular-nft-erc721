@@ -79,6 +79,31 @@ Use the files in [`remix/`](remix/) (OpenZeppelin imports are pinned to 5.0.2, o
 
 Gas shown in Remix may differ slightly from the table above because the Remix VM and Hardhat can use different protocol versions.
 
+## Additional experiments (ablation, batch workloads, repeated trials, behavioural tests)
+
+These were added for the extended manuscript. All commands run from the repository root after `npm ci`.
+
+```bash
+node scripts/compile.js          # compiles contracts/ (includes test helpers)
+node scripts/experiment.js       # original three-contract experiment -> results.json
+node scripts/gen_variants.js     # regenerates the 16 factorial variants in variants/
+node scripts/ablation.js 30 10   # A-D: 30 fresh deployments per contract, 10 for ten-token workloads -> results/ablation.json (about 7 min)
+node scripts/security_tests.js   # behavioural tests T1-T9 -> results/security_tests.json
+node scripts/analyze.js          # derived tables and percentages -> results/derived.json
+```
+
+Key findings (full discussion and limitations are in the manuscript):
+
+| Finding | Value |
+|---|---|
+| Steady-state single mint, OZBaselineNFT vs ModularNFT | 170,807 vs 81,157 gas (52.5% lower) |
+| Effect of shared base URI vs per-token URI storage (8 paired variants) | about 92,100 gas per mint |
+| Cost of reentrancy guard / pausable / supply cap per mint | about +2,371 / +123 / about 0 gas |
+| Ten tokens: 10 transactions vs 1 batch transaction (fresh contract) | 674,780 vs 326,468 gas (51.6% lower) |
+| Ten tokens: proxy loop in one transaction vs batch function | 347,862 vs 326,468 gas (6.1% lower) |
+
+Notes: gas is deterministic on the in-process EVM, so the repeated trials vary only through calldata byte patterns (seeded pseudo-random recipient addresses); no significance tests are claimed. `scripts/*.js` disable the ethers v6 250 ms call cache (`cacheTimeout: -1`), which otherwise returns stale `estimateGas` results for identical repeated calls. `variants/` is generated code; do not edit by hand.
+
 ## Limitations (please read)
 
 - Measured on a **local EVM only**. Confirmation time, network fees and Layer-2 deployment were not evaluated.
@@ -97,7 +122,8 @@ The contracts, test scripts and diagrams were developed with the assistance of a
 contracts/    Solidity sources (Hardhat / solc-js build)
 remix/        Same contracts with pinned imports for Remix IDE
 scripts/      compile.js, experiment.js
-results/      gas_results.csv and raw Slither output
+results/      gas_results.csv, raw Slither output, ablation.json, security_tests.json, derived.json
+variants/     16 generated ablation contracts + Looper helper
 results.json  Output of scripts/experiment.js
 docs/         UML diagrams (PNG + Graphviz source) and gas chart
 ```

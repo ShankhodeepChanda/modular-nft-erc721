@@ -5,7 +5,7 @@ const art = JSON.parse(fs.readFileSync(__dirname + '/../artifacts/compiled.json'
 const URI = 'ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/';
 
 (async () => {
-  const provider = new ethers.BrowserProvider(hre.network.provider);
+  const provider = new ethers.BrowserProvider(hre.network.provider, undefined, { cacheTimeout: -1 }) /* ethers v6 caches identical eth_call/estimateGas for 250 ms; disabled */;
   const S = []; for (let i = 0; i < 40; i++) S.push(await provider.getSigner(i));
   const [deployer, attacker, user] = S;
   const addr = (s) => s.address;

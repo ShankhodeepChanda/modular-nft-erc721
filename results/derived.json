@@ -1,0 +1,382 @@
+{
+ "reduction_vs_OZ": {
+  "single_mint": 52.22,
+  "ten_separate": 57.69,
+  "batch_vs_OZ_ten_separate": 79,
+  "deploy": -7.06,
+  "transfer": -0.22,
+  "burn": -0.06
+ },
+ "reduction_vs_Naive": {
+  "single_mint": 50.34,
+  "ten_separate": 55.84,
+  "deploy": -88.84,
+  "transfer": -0.82,
+  "burn": 35.39
+ },
+ "batch_vs_ten_tx_modular": 50.36,
+ "per_token": {
+  "naive_sep": 148930,
+  "oz_sep": 155435,
+  "mod_sep": 65768,
+  "mod_batch": 32646.8
+ },
+ "break_even": {
+  "vs_OZBaselineNFT": {
+   "extra_deploy": 90125,
+   "saving_per_mint": 89649,
+   "n_star": 1.005,
+   "min_mints": 2
+  },
+  "vs_NaiveNFT": {
+   "extra_deploy": 642980,
+   "saving_per_mint": 83144,
+   "n_star": 7.733,
+   "min_mints": 8
+  }
+ },
+ "feature_effects": {
+  "base": {
+   "guard": {
+    "deploy": {
+     "mean": 39527.3,
+     "min": "39480.0",
+     "max": "39612.0"
+    },
+    "mint_fresh_recipient_steady": {
+     "mean": 2370.8,
+     "min": "2370.5",
+     "max": "2371.1"
+    },
+    "mint_same_recipient_rest": {
+     "mean": 2371.1,
+     "min": "2369.4",
+     "max": "2372.6"
+    }
+   },
+   "pause": {
+    "deploy": {
+     "mean": 76530.3,
+     "min": "76452.0",
+     "max": "76571.0"
+    },
+    "mint_fresh_recipient_steady": {
+     "mean": 123.1,
+     "min": "78.9",
+     "max": "167.2"
+    },
+    "mint_same_recipient_rest": {
+     "mean": 122.9,
+     "min": "78.6",
+     "max": "168.6"
+    }
+   },
+   "cap": {
+    "deploy": {
+     "mean": 39608.3,
+     "min": "39573.0",
+     "max": "39681.0"
+    },
+    "mint_fresh_recipient_steady": {
+     "mean": -27,
+     "min": "-71.2",
+     "max": "17.2"
+    },
+    "mint_same_recipient_rest": {
+     "mean": -27.1,
+     "min": "-71.8",
+     "max": "17.8"
+    }
+   }
+  },
+  "token": {
+   "guard": {
+    "deploy": {
+     "mean": 35175.5,
+     "min": "35133.0",
+     "max": "35223.0"
+    },
+    "mint_fresh_recipient_steady": {
+     "mean": 2371,
+     "min": "2370.8",
+     "max": "2371.2"
+    },
+    "mint_same_recipient_rest": {
+     "mean": 2370.7,
+     "min": "2369.8",
+     "max": "2371.4"
+    }
+   },
+   "pause": {
+    "deploy": {
+     "mean": 74879.5,
+     "min": "74837.0",
+     "max": "74927.0"
+    },
+    "mint_fresh_recipient_steady": {
+     "mean": 178.1,
+     "min": "167.0",
+     "max": "189.2"
+    },
+    "mint_same_recipient_rest": {
+     "mean": 177.7,
+     "min": "166.6",
+     "max": "189.4"
+    }
+   },
+   "cap": {
+    "deploy": {
+     "mean": 24086.5,
+     "min": "24017.0",
+     "max": "24151.0"
+    },
+    "mint_fresh_recipient_steady": {
+     "mean": 28.2,
+     "min": "17.2",
+     "max": "39.3"
+    },
+    "mint_same_recipient_rest": {
+     "mean": 28.1,
+     "min": "17.0",
+     "max": "39.4"
+    }
+   }
+  }
+ },
+ "metadata_effect": {
+  "deploy": {
+   "mean": 54773.4,
+   "min": "43977.0",
+   "max": "65485.0"
+  },
+  "mint_fresh_recipient_steady": {
+   "mean": 92121.8,
+   "min": "92050.2",
+   "max": "92160.6"
+  },
+  "mint_same_recipient_rest": {
+   "mean": 92127.4,
+   "min": "92055.6",
+   "max": "92166.0"
+  }
+ },
+ "validation": {
+  "V_base_G1P1C1_vs_ModularNFT_mint": [
+   81156.92631578945,
+   81157.05263157893
+  ],
+  "V_token_G0P0C0_vs_OZBaseline_mint": [
+   170740.32631578954,
+   170806.57894736846
+  ]
+ },
+ "w10": {
+  "cold": {
+   "sep": {
+    "n": 10,
+    "mean": 674780,
+    "sd": 0,
+    "min": 674780,
+    "max": 674780
+   },
+   "loop": {
+    "n": 10,
+    "mean": 347861.8,
+    "sd": 3.7947331922020546,
+    "min": 347851,
+    "max": 347863
+   },
+   "batch": {
+    "n": 10,
+    "mean": 326468,
+    "sd": 0,
+    "min": 326468,
+    "max": 326468
+   }
+  },
+  "warm": {
+   "sep": {
+    "n": 10,
+    "mean": 657680,
+    "sd": 0,
+    "min": 657680,
+    "max": 657680
+   },
+   "loop": {
+    "n": 10,
+    "mean": 330763,
+    "sd": 0,
+    "min": 330763,
+    "max": 330763
+   },
+   "batch": {
+    "n": 10,
+    "mean": 309368,
+    "sd": 0,
+    "min": 309368,
+    "max": 309368
+   }
+  }
+ },
+ "w10_all_warm": {
+  "V_base_G0P0C0": {
+   "sep": 632974,
+   "loop": 324088.2,
+   "batch": 306645.4
+  },
+  "V_base_G0P0C1": {
+   "sep": 632288,
+   "loop": 323381.8,
+   "batch": 306739.8
+  },
+  "V_base_G0P1C0": {
+   "sep": 633800,
+   "loop": 324883,
+   "batch": 306794
+  },
+  "V_base_G0P1C1": {
+   "sep": 633958,
+   "loop": 325051.8,
+   "batch": 306884.8
+  },
+  "V_base_G1P0C0": {
+   "sep": 656720,
+   "loop": 329800.6,
+   "batch": 309020
+  },
+  "V_base_G1P0C1": {
+   "sep": 656010,
+   "loop": 329091.8,
+   "batch": 309112
+  },
+  "V_base_G1P1C0": {
+   "sep": 657510,
+   "loop": 330591.8,
+   "batch": 309165
+  },
+  "V_base_G1P1C1": {
+   "sep": 657668,
+   "loop": 330761.8,
+   "batch": 309255.8
+  },
+  "ModularNFT": {
+   "sep": 657680,
+   "loop": 330763,
+   "batch": 309368
+  }
+ },
+ "uri_len": [
+  {
+   "len": 0,
+   "gas": 82964
+  },
+  {
+   "len": 20,
+   "gas": 103264
+  },
+  {
+   "len": 40,
+   "gas": 148020
+  },
+  {
+   "len": 67,
+   "gas": 170660.6
+  },
+  {
+   "len": 100,
+   "gas": 193373.2
+  },
+  {
+   "len": 150,
+   "gas": 216297
+  },
+  {
+   "len": 200,
+   "gas": 261535
+  }
+ ],
+ "break_even_by_uri_len": [
+  {
+   "len": 0,
+   "saving_per_mint": 1807,
+   "n_star": 49.87,
+   "min_mints": 50
+  },
+  {
+   "len": 20,
+   "saving_per_mint": 22107,
+   "n_star": 4.08,
+   "min_mints": 5
+  },
+  {
+   "len": 40,
+   "saving_per_mint": 66863,
+   "n_star": 1.35,
+   "min_mints": 2
+  },
+  {
+   "len": 67,
+   "saving_per_mint": 89504,
+   "n_star": 1.01,
+   "min_mints": 2
+  },
+  {
+   "len": 100,
+   "saving_per_mint": 112216,
+   "n_star": 0.8,
+   "min_mints": 1
+  },
+  {
+   "len": 150,
+   "saving_per_mint": 135140,
+   "n_star": 0.67,
+   "min_mints": 1
+  },
+  {
+   "len": 200,
+   "saving_per_mint": 180378,
+   "n_star": 0.5,
+   "min_mints": 1
+  }
+ ],
+ "cumulative": {
+  "1": {
+   "Naive": 888036.1578947369,
+   "OZ": 1447396.5789473685,
+   "Modular": 1447872.0526315789
+  },
+  "10": {
+   "Naive": 2366746.578947369,
+   "OZ": 2984655.7894736845,
+   "Modular": 2178285.526315789
+  },
+  "100": {
+   "Naive": 17153850.78947369,
+   "OZ": 18357247.894736845,
+   "Modular": 9482420.263157893
+  },
+  "1000": {
+   "Naive": 165024892.89473692,
+   "OZ": 172083168.94736844,
+   "Modular": 82523767.63157894
+  }
+ },
+ "steady_reduction_vs_OZ": 52.49,
+ "steady_reduction_vs_Naive": 50.6,
+ "w10_pct": {
+  "cold": {
+   "batch_vs_sep": 51.62,
+   "loop_vs_sep": 48.45,
+   "batch_vs_loop": 6.15
+  },
+  "warm": {
+   "batch_vs_sep": 52.96,
+   "loop_vs_sep": 49.71,
+   "batch_vs_loop": 6.47
+  }
+ },
+ "first_mint_penalty": {
+  "Modular": 17099.74736842107,
+  "OZ": 17093.221052631532
+ }
+}
