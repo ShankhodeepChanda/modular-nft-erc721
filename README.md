@@ -50,15 +50,18 @@ Grey classes come from OpenZeppelin; green is code written for this study. More 
 
 ## Run it locally
 
-Requires Node.js 18 or newer (tested on Node 22).
+Requires Node.js 18 or newer (tested on Node 22). Run these commands from the repository root:
 
 ```bash
-npm install                   # exact versions are pinned
-node scripts/compile.js       # compiles the contracts in contracts/
-node scripts/experiment.js    # runs gas + security tests, writes results.json
+npm ci
+npm run compile
+npm run experiment
+node scripts/security_tests.js
 ```
 
-Expected: `ModularNFT` single mint = 82,012 gas and 10-token batch = 326,468 gas.
+`npm ci` installs the exact dependency versions from `package-lock.json`. `npm run compile` compiles the Solidity files in `contracts/` and writes `artifacts/compiled.json`. `npm run experiment` runs the original gas and security experiment and replaces `results.json`; `node scripts/security_tests.js` runs the extended behavioral checks and replaces `results/security_tests.json`. Both result files are tracked in the repository, so running the commands changes those local files.
+
+The checked-in run reports `ModularNFT` single mint = 82,012 gas and 10-token batch = 326,468 gas. Gas values can change if compiler, optimizer, or EVM settings change. No GitHub Actions workflow is configured, so these checks run locally.
 
 Optional static analysis:
 
