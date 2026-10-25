@@ -1,13 +1,25 @@
 // Experiments A-D: factorial ablation, batch workloads, repeated trials. Usage: node scripts/ablation.js [R_mint] [R_w10]
 const hre = require('hardhat'), { ethers } = require('ethers'), solc = require('solc'), fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..'), R1 = +process.argv[2] || 30, R2 = +process.argv[3] || 10;
+
+// ---- ensure variants exist
+if (!fs.existsSync(path.join(root, 'variants', 'variants.json'))) {
+  console.log('variants not found; generating variants first...');
+  require('./gen_variants.js');
+}
+
 // ---- compile variants with the SAME settings as scripts/compile.js
-const names = JSON.parse(fs.readFileSync(root + '/variants/variants.json'));
-const sources = {}; for (const f of [...names.map(n => n + '.sol'), 'Looper.sol']) sources['variants/' + f] = { content: fs.readFileSync(root + '/variants/' + f, 'utf8') };
-const imp = (p) => { try { return { contents: fs.readFileSync(root + '/node_modules/' + p, 'utf8') }; } catch (e) { return { error: p }; } };
+const names = JSON.parse(fs.readFileSync(path.join(root, 'variants', 'variants.json')));
+const sources = {}; for (const f of [...names.map(n => n + '.sol'), 'Looper.sol']) sources['variants/' + f] = { content: fs.readFileSync(path.join(root, 'variants', f), 'utf8') };
+const imp = (p) => { try { return { contents: fs.readFileSync(path.join(root, 'node_modules', p), 'utf8') }; } catch (e) { return { error: p }; } };
 const co = JSON.parse(solc.compile(JSON.stringify({ language: 'Solidity', sources, settings: { optimizer: { enabled: true, runs: 200 }, evmVersion: 'paris', outputSelection: { '*': { '*': ['abi', 'evm.bytecode.object'] } } } }), { import: imp }));
 for (const e of co.errors || []) if (e.severity === 'error') { console.log(e.formattedMessage); process.exit(1); }
-const art = JSON.parse(fs.readFileSync(root + '/artifacts/compiled.json'));
+
+if (!fs.existsSync(path.join(root, 'artifacts', 'compiled.json'))) {
+  console.log('artifacts/compiled.json not found; compiling contracts first...');
+  require('./compile.js');
+}
+const art = JSON.parse(fs.readFileSync(path.join(root, 'artifacts', 'compiled.json')));
 for (const f in co.contracts) if (f.startsWith('variants/')) for (const c in co.contracts[f]) art[c] = { abi: co.contracts[f][c].abi, bytecode: '0x' + co.contracts[f][c].evm.bytecode.object };
 const URI = 'ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/';
 const rnd = (tag) => ethers.getAddress('0x' + ethers.keccak256(ethers.toUtf8Bytes(tag)).slice(-40)); // seeded pseudo-random address
@@ -20,7 +32,6 @@ const stat = (a) => { const n = a.length, m = a.reduce((x, y) => x + y, 0) / n; 
   const g = async (p) => Number((await (await p).wait()).gasUsed);
   const all = [...names, 'NaiveNFT', 'OZBaselineNFT', 'ModularNFT'];
   const isTok = (n) => n === 'NaiveNFT' || n === 'OZBaselineNFT' || n.includes('_token_');
-  const mk = (n, owner) => n === 'NaiveNFT' ? dep(n) : n === 'OZBaselineNFT' ? dep(n, owner) : n === 'ModularNFT' ? dep(n, 'M', 'M', URI, 100000, owner) : dep(n, 'M', 'M', n.includes('_token_') ? undefined : URI, 100000, owner);
   const mkargs = (n, owner) => {
     if (n === 'NaiveNFT') return [n];
     if (n === 'OZBaselineNFT') return [n, owner];
@@ -78,6 +89,7 @@ const stat = (a) => { const n = a.length, m = a.reduce((x, y) => x + y, 0) / n; 
     }
     out.fixed_repeat[n] = { mint_avg20: stat(m), transfer_avg10: stat(tr), burn_avg10: stat(bu) };
   }
-  fs.writeFileSync(root + '/results/ablation.json', JSON.stringify(out, null, 1));
+  fs.mkdirSync(path.join(root, 'results'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'results', 'ablation.json'), JSON.stringify(out, null, 1));
   console.log('done');
 })().catch(e => { console.error(e); process.exit(1); });

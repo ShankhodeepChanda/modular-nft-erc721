@@ -50,16 +50,21 @@ Grey classes come from OpenZeppelin; green is code written for this study. More 
 
 ## Run it locally
 
-Requires Node.js 18 or newer (tested on Node 22). Run these commands from the repository root:
+Requires Node.js 18 or newer (tested on Node 22 and Node 24). Run these commands from the repository root:
 
 ```bash
 npm ci
 npm run compile
 npm run experiment
-node scripts/security_tests.js
+npm test
 ```
 
-`npm ci` installs the exact dependency versions from `package-lock.json`. `npm run compile` compiles the Solidity files in `contracts/` and writes `artifacts/compiled.json`. `npm run experiment` runs the original gas and security experiment and replaces `results.json`; `node scripts/security_tests.js` runs the extended behavioral checks and replaces `results/security_tests.json`. Both result files are tracked in the repository, so running the commands changes those local files.
+- `npm ci` installs the exact dependency versions from `package-lock.json`.
+- `npm run compile` compiles the Solidity contracts in `contracts/` with Solc 0.8.26 (optimizer 200 runs, `evmVersion: 'paris'`) and outputs `artifacts/compiled.json`.
+- `npm run experiment` runs the primary three-contract comparison and updates `results.json`.
+- `npm test` (or `npm run security-tests` / `node scripts/security_tests.js`) runs behavioral checks T1–T9 (including a 1500-step randomized invariant test) and updates `results/security_tests.json`.
+
+> **Note:** The test and experiment scripts feature self-healing prerequisite checks. If `artifacts/compiled.json` or generated variants are not present, the scripts automatically trigger compilation and variant generation prior to execution.
 
 The checked-in run reports `ModularNFT` single mint = 82,012 gas and 10-token batch = 326,468 gas. Gas values can change if compiler, optimizer, or EVM settings change. No GitHub Actions workflow is configured, so these checks run locally.
 
@@ -84,15 +89,15 @@ Gas shown in Remix may differ slightly from the table above because the Remix VM
 
 ## Additional experiments (ablation, batch workloads, repeated trials, behavioural tests)
 
-These were added for the extended manuscript. All commands run from the repository root after `npm ci`.
+These were added for the extended manuscript. All commands run from the repository root after `npm ci`:
 
 ```bash
-node scripts/compile.js          # compiles contracts/ (includes test helpers)
-node scripts/experiment.js       # original three-contract experiment -> results.json
-node scripts/gen_variants.js     # regenerates the 16 factorial variants in variants/
-node scripts/ablation.js 30 10   # A-D: 30 fresh deployments per contract, 10 for ten-token workloads -> results/ablation.json (about 7 min)
-node scripts/security_tests.js   # behavioural tests T1-T9 -> results/security_tests.json
-node scripts/analyze.js          # derived tables and percentages -> results/derived.json
+npm run compile           # or node scripts/compile.js        (compiles contracts/ and test helpers)
+npm run experiment        # or node scripts/experiment.js     (original three-contract experiment -> results.json)
+npm run gen-variants      # or node scripts/gen_variants.js   (regenerates the 16 factorial variants in variants/)
+npm run ablation          # or node scripts/ablation.js 30 10 (A-D: 30 fresh deployments, 10 for batch workloads -> results/ablation.json, ~7 min)
+npm test                  # or npm run security-tests         (behavioural tests T1-T9 -> results/security_tests.json)
+npm run analyze           # or node scripts/analyze.js        (derived tables and percentages -> results/derived.json)
 ```
 
 Key findings (full discussion and limitations are in the manuscript):
@@ -124,7 +129,7 @@ The contracts, test scripts and diagrams were developed with the assistance of a
 ```
 contracts/    Solidity sources (Hardhat / solc-js build)
 remix/        Same contracts with pinned imports for Remix IDE
-scripts/      compile.js, experiment.js
+scripts/      compile.js, experiment.js, security_tests.js, gen_variants.js, ablation.js, analyze.js
 results/      gas_results.csv, raw Slither output, ablation.json, security_tests.json, derived.json
 variants/     16 generated ablation contracts + Looper helper
 results.json  Output of scripts/experiment.js

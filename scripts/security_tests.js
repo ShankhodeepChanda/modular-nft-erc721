@@ -1,8 +1,22 @@
 // Behavioural security tests T1-T8 and a small seeded randomized invariant test (T9). Usage: node scripts/security_tests.js
-const hre = require('hardhat'), { ethers } = require('ethers'), solc = require('solc'), fs = require('fs'), root = __dirname + '/..';
-const art = JSON.parse(fs.readFileSync(root + '/artifacts/compiled.json'));
-{ const n = 'V_base_G0P0C1', src = { ['variants/' + n + '.sol']: { content: fs.readFileSync(`${root}/variants/${n}.sol`, 'utf8') } };
-  const o = JSON.parse(solc.compile(JSON.stringify({ language: 'Solidity', sources: src, settings: { optimizer: { enabled: true, runs: 200 }, evmVersion: 'paris', outputSelection: { '*': { '*': ['abi', 'evm.bytecode.object'] } } } }), { import: (p) => ({ contents: fs.readFileSync(root + '/node_modules/' + p, 'utf8') }) }));
+const hre = require('hardhat'), { ethers } = require('ethers'), solc = require('solc'), fs = require('fs'), path = require('path'), root = path.join(__dirname, '..');
+
+const artPath = path.join(root, 'artifacts', 'compiled.json');
+if (!fs.existsSync(artPath)) {
+  console.log('artifacts/compiled.json not found; compiling contracts first...');
+  require('./compile.js');
+}
+const art = JSON.parse(fs.readFileSync(artPath));
+
+const n = 'V_base_G0P0C1';
+const variantFile = path.join(root, 'variants', `${n}.sol`);
+if (!fs.existsSync(variantFile)) {
+  console.log('variants not found; generating variants first...');
+  require('./gen_variants.js');
+}
+
+{ const src = { ['variants/' + n + '.sol']: { content: fs.readFileSync(variantFile, 'utf8') } };
+  const o = JSON.parse(solc.compile(JSON.stringify({ language: 'Solidity', sources: src, settings: { optimizer: { enabled: true, runs: 200 }, evmVersion: 'paris', outputSelection: { '*': { '*': ['abi', 'evm.bytecode.object'] } } } }), { import: (p) => ({ contents: fs.readFileSync(path.join(root, 'node_modules', p), 'utf8') }) }));
   const c = o.contracts['variants/' + n.concat('.sol')][n]; art[n] = { abi: c.abi, bytecode: '0x' + c.evm.bytecode.object }; }
 const URI = 'ipfs://bafyexample/';
 (async () => {
@@ -71,6 +85,12 @@ const URI = 'ipfs://bafyexample/';
       ops++; } catch (e) { if (!/Pausable|EnforcedPause|ExpectedPause/.test(e.message || '')) viol.push(['err', i, (e.message || '').slice(0, 60)]); } 
       if (i % 100 === 99) { const tm = Number(await m.totalMinted()); let sum = 0; for (const u of users) sum += Number(await m.balanceOf(u.address)); if (tm !== minted || tm > CAP || sum !== owners.size) viol.push(['inv', i, tm, minted, sum, owners.size]); } }
     for (const [id, o] of owners) if ((await m.ownerOf(id)) !== o) viol.push(['owner', id]);
-    ok('T9_random_invariants', { ops, burnedOrMoved: 'see model', ops_hist: H, finalMinted: minted, live: owners.size, violations: viol.length, first: viol.slice(0, 3) }); }
-  fs.writeFileSync(root + '/results/security_tests.json', JSON.stringify(R, null, 1));
+    ok('T9_random_invariants', { ops, burnedOrMoved: 'see model', ops_hist: H, finalMinted: minted, live: owners.size, violations: viol.length, first: viol.slice(0, 3) });
+    if (viol.length > 0) {
+      console.error(`Invariant violations detected: ${viol.length}`);
+      process.exitCode = 1;
+    }
+  }
+  fs.mkdirSync(path.join(root, 'results'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'results', 'security_tests.json'), JSON.stringify(R, null, 1));
 })().catch((e) => { console.error(e); process.exit(1); });

@@ -1,13 +1,25 @@
 {
   "name": "nft-contract-experiment",
   "version": "1.0.0",
-  "description": "",
+  "description": "Gas and security study of modular ERC-721 smart contracts",
   "main": "index.js",
   "scripts": {
     "compile": "node scripts/compile.js",
-    "experiment": "node scripts/experiment.js"
+    "experiment": "node scripts/experiment.js",
+    "test": "node scripts/security_tests.js",
+    "security-tests": "node scripts/security_tests.js",
+    "gen-variants": "node scripts/gen_variants.js",
+    "ablation": "node scripts/ablation.js",
+    "analyze": "node scripts/analyze.js"
   },
-  "keywords": [],
+  "keywords": [
+    "erc721",
+    "nft",
+    "gas-optimization",
+    "smart-contracts",
+    "ethereum",
+    "solidity"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

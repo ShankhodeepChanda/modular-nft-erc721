@@ -1,7 +1,15 @@
 const hre = require('hardhat');
 const { ethers } = require('ethers');
 const fs = require('fs');
-const art = JSON.parse(fs.readFileSync(__dirname + '/../artifacts/compiled.json'));
+const path = require('path');
+
+const root = path.join(__dirname, '..');
+const artPath = path.join(root, 'artifacts', 'compiled.json');
+if (!fs.existsSync(artPath)) {
+  console.log('artifacts/compiled.json not found; compiling contracts first...');
+  require('./compile.js');
+}
+const art = JSON.parse(fs.readFileSync(artPath));
 const URI = 'ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/';
 
 (async () => {
@@ -86,6 +94,6 @@ const URI = 'ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/
       sec.reentrant_mint[k] = blocked ? 'blocked (tx reverted)' : `reentrant mint accepted (balance ${bal})`; }
     sec.reentrant_mint.NaiveNFT = 'n/a (no receiver callback)'; }
   R.security = sec;
-  fs.writeFileSync(__dirname + '/../results.json', JSON.stringify(R, null, 2));
+  fs.writeFileSync(path.join(root, 'results.json'), JSON.stringify(R, null, 2));
   console.log(JSON.stringify(R, null, 2));
 })().catch(e => { console.error(e); process.exit(1); });

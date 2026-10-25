@@ -1,5 +1,20 @@
 // Derives all tables/percentages used in the paper from results.json and results/ablation.json. Prints JSON + writes results/derived.json
-const fs = require('fs'), r = JSON.parse(fs.readFileSync(__dirname + '/../results.json')), a = JSON.parse(fs.readFileSync(__dirname + '/../results/ablation.json'));
+const fs = require('fs'), path = require('path');
+const root = path.join(__dirname, '..');
+const resultsPath = path.join(root, 'results.json');
+const ablationPath = path.join(root, 'results', 'ablation.json');
+
+if (!fs.existsSync(resultsPath)) {
+  console.error(`Error: ${resultsPath} not found. Please run "npm run experiment" first.`);
+  process.exit(1);
+}
+if (!fs.existsSync(ablationPath)) {
+  console.error(`Error: ${ablationPath} not found. Please run "npm run ablation" first.`);
+  process.exit(1);
+}
+
+const r = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+const a = JSON.parse(fs.readFileSync(ablationPath, 'utf8'));
 const pct = (base, x) => +(((base - x) / base) * 100).toFixed(2);   // percentage reduction (negative = increase)
 const G = r.gas, d = {};
 d.reduction_vs_OZ = { single_mint: pct(G.OZBaselineNFT.mint_single, G.ModularNFT.mint_single), ten_separate: pct(G.OZBaselineNFT.mint10_separate, G.ModularNFT.mint10_separate), batch_vs_OZ_ten_separate: pct(G.OZBaselineNFT.mint10_separate, G.ModularNFT.mint10_batch), deploy: pct(G.OZBaselineNFT.deploy, G.ModularNFT.deploy), transfer: pct(G.OZBaselineNFT.transfer, G.ModularNFT.transfer), burn: pct(G.OZBaselineNFT.burn, G.ModularNFT.burn) };
@@ -28,5 +43,6 @@ d.steady_reduction_vs_OZ = pct(m.OZBaselineNFT.mint_fresh_recipient_steady.mean,
 d.steady_reduction_vs_Naive = pct(m.NaiveNFT.mint_fresh_recipient_steady.mean, m.ModularNFT.mint_fresh_recipient_steady.mean);
 const w = a.w10.ModularNFT; d.w10_pct = { cold: { batch_vs_sep: pct(w.cold.sep.mean, w.cold.batch.mean), loop_vs_sep: pct(w.cold.sep.mean, w.cold.loop.mean), batch_vs_loop: pct(w.cold.loop.mean, w.cold.batch.mean) }, warm: { batch_vs_sep: pct(w.warm.sep.mean, w.warm.batch.mean), loop_vs_sep: pct(w.warm.sep.mean, w.warm.loop.mean), batch_vs_loop: pct(w.warm.loop.mean, w.warm.batch.mean) } };
 d.first_mint_penalty = { Modular: m.ModularNFT.first_mint_fresh_contract.mean - m.ModularNFT.mint_fresh_recipient_steady.mean, OZ: m.OZBaselineNFT.first_mint_fresh_contract.mean - m.OZBaselineNFT.mint_fresh_recipient_steady.mean };
-fs.writeFileSync(__dirname + '/../results/derived.json', JSON.stringify(d, null, 1));
+fs.mkdirSync(path.join(root, 'results'), { recursive: true });
+fs.writeFileSync(path.join(root, 'results', 'derived.json'), JSON.stringify(d, null, 1));
 console.log(JSON.stringify(d, null, 1));
